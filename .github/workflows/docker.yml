@@ -27,9 +27,8 @@ jobs:
           NGROKYML: ${{ secrets.NGROKYML }}
         run: |
           echo ${#NGROK}
-          echo "NGROK=$NGROK" > secret
-          echo $NGROKYML > ngrok.yml
-          docker build --build-arg $NGROK -t apacke_ngrok . 
+          cat ngrok.yml | sed "s/REPLACE_WITH_TOKEN/$NGROK/" > ngrok.yml
+          docker build -t apacke_ngrok . 
           
       - name: docker run
         run: |

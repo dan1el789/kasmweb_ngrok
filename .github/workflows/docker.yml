@@ -28,6 +28,7 @@ jobs:
           NGROK: ${{ secrets.NGROK }}
         run: |
           echo ${#NGROK}
+          echo "NGROK=$NGROK" > secret
           docker build --build-arg $NGROK -t apacke_ngrok . 
           
       - name: docker run

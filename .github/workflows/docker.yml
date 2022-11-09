@@ -18,8 +18,9 @@ jobs:
         run: |
           wget https://github.com/vincenthsu/systemd-ngrok/archive/refs/heads/master.zip
           sudo apt install unzip zip -y 
-          ls -la
           unzip -d ./ngrok master.zip
+          ls -la
+
 
       - name: docker build
         env:

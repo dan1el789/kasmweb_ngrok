@@ -27,15 +27,16 @@ jobs:
         run: |
           echo ${#NGROK}
           cat ngrok.yml | sed "s/REPLACE_WITH_TOKEN/$NGROK/" > ngrok.yml
-          docker build -t apacke_ngrok . 
+          docker build -t kasm_ngrok . 
           
       - name: docker run
         env:
-          NGROK: ${{ secrets.NGROK }}
+          NGROK: ${{ secrets.NGROK }}          
+          KASM_PASSWORD: ${{ secrets.KASM_PASSWORD }}
         run: |
           echo "hi up to here"
-          docker run --name httpd -d apacke_ngrok 
+          docker run --name httpd --shm-size=512m -p 6901:6901 -e VNC_PW=$KASM_PASSWORD -d kasm_ngrok 
           sleep 5
-          docker exec -i httpd ngrok config add-authtoken $NGROK
-          docker exec -i httpd ngrok http 80
+          docker exec -i httpd ngrok config add-authtoken $NGROK &
+          docker exec -i httpd ngrok https 6901
           sleep 3600

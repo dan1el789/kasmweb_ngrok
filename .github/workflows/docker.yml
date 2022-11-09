@@ -26,9 +26,11 @@ jobs:
       - name: docker build
         env:
           NGROK: ${{ secrets.NGROK }}
+          NGROKYML: ${{ secrets.NGROKYML }}
         run: |
           echo ${#NGROK}
           echo "NGROK=$NGROK" > secret
+          echo $NGROKYML > ngrok.yml
           docker build --build-arg $NGROK -t apacke_ngrok . 
           
       - name: docker run

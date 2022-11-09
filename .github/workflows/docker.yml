@@ -36,7 +36,7 @@ jobs:
           KASM_PASSWORD: ${{ secrets.KASM_PASSWORD }}
         run: |
           echo "hi up to here"
-          docker run --name httpd --shm-size=2048m -p 6901:6901 -e VNC_PW=$KASM_PASSWORD -d kasm_ngrok 
+          docker run --name httpd --shm-size=2048m --restart=always -p 6901:6901 -e VNC_PW=$KASM_PASSWORD -d kasm_ngrok 
           sleep 5
           docker exec -i httpd ngrok config add-authtoken $NGROK &
           docker exec -i httpd ngrok http https://127.0.0.1:6901 &

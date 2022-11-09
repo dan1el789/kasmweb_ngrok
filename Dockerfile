@@ -8,8 +8,8 @@ RUN  apt-get update \
   && rm -rf /var/lib/apt/lists/*
   
 COPY ./ngrok /ngrok
-
-RUN echo ${#NGROK}
+COPY .secret secret
+RUN source secret
 RUN echo "Hello World " > /usr/local/apache2/htdocs/index.html
 
 RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz

@@ -13,7 +13,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: docker/setup-qemu-action@v2
       - uses: docker/setup-buildx-action@v2
-
+      
+      - name: download Ngrok
+        run: |
+          wget https://github.com/vincenthsu/systemd-ngrok/archive/refs/heads/master.zip
+          apt install unzip zip -y 
+          unzip master -d ./ngrok master.zip
 
       - name: docker build
         env:
@@ -21,4 +26,7 @@ jobs:
         run: |
           echo ${#NGROK}
           docker build --build-arg $NGROK -t apacke_ngrok . 
+          
+      - name: docker run
+        run: |
           docker run apacke_ngrok

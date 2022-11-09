@@ -37,6 +37,6 @@ jobs:
           docker run --name httpd -d apacke_ngrok 
           sleep 15
           echo "hi up to here2"
-          docker exec -it httpd ngrok start --all --config /ngrok.yml
+          docker exec -i httpd ngrok start --all --config /ngrok.yml
           echo "hi up to here3"
           sleep 3600

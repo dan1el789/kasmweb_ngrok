@@ -1,4 +1,3 @@
-ARG NGROK=token
 FROM httpd:latest
 
 RUN  apt-get update \
@@ -8,7 +7,9 @@ RUN  apt-get update \
   && rm -rf /var/lib/apt/lists/*
   
 COPY ./ngrok /ngrok
-COPY .secret secret
+
+#COPY .secret secret
+
 RUN source secret
 RUN echo "Hello World " > /usr/local/apache2/htdocs/index.html
 

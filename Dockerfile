@@ -3,7 +3,7 @@ FROM httpd:latest
 
 RUN  apt-get update \
   && apt-get install -y wget \
-  && apt-get install -y git-all \
+  && apt-get install -y git \
   && rm -rf /var/lib/apt/lists/*
   
 COPY ./ngrok /ngrok

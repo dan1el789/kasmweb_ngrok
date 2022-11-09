@@ -16,12 +16,10 @@ jobs:
       
       - name: download Ngrok
         run: |
-          wget https://github.com/vincenthsu/systemd-ngrok/archive/refs/heads/master.zip
+          wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
           sudo apt install unzip zip -y 
-          unzip -d ngrok master.zip
+          tar -xvzf ngrok-v3-stable-linux-amd64.tgz
           ls -la
-          ls -la ngrok
-
 
       - name: docker build
         env:

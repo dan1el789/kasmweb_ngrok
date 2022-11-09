@@ -24,18 +24,20 @@ jobs:
       - name: docker build
         env:
           NGROK: ${{ secrets.NGROK }}
-          NGROKYML: ${{ secrets.NGROKYML }}
         run: |
           echo ${#NGROK}
           cat ngrok.yml | sed "s/REPLACE_WITH_TOKEN/$NGROK/" > ngrok.yml
           docker build -t apacke_ngrok . 
           
       - name: docker run
+        env:
+          NGROK: ${{ secrets.NGROK }}
         run: |
           echo "hi up to here"
           docker run --name httpd -d apacke_ngrok 
           sleep 15
           echo "hi up to here2"
-          docker exec -i httpd ngrok start --all --config /ngrok.yml
+          docker exec -i httpd ngrok config add-authtoken $NGROK
+          docker exec -i ngrok http 80
           echo "hi up to here3"
           sleep 3600

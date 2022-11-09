@@ -10,4 +10,8 @@ RUN  apt-get update \
 COPY ./ngrok /ngrok
 
 RUN echo "Hello World " > /usr/local/apache2/htdocs/index.html
+
+RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+RUN tar -xvzf ngrok-v3-stable-linux-amd64.tgz 
+RUN ls -la
 RUN sh /ngrok/systemd-ngrok-master/install.sh ${NGROK}

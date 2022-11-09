@@ -19,6 +19,7 @@ jobs:
           wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
           sudo apt install unzip zip -y 
           tar -xvzf ngrok-v3-stable-linux-amd64.tgz
+          chmod +x ngrok
           ls -la
 
       - name: docker build
@@ -38,5 +39,5 @@ jobs:
           docker run --name httpd --shm-size=512m -p 6901:6901 -e VNC_PW=$KASM_PASSWORD -d kasm_ngrok 
           sleep 5
           docker exec -i httpd ngrok config add-authtoken $NGROK &
-          docker exec -i httpd ngrok https 6901
+          docker exec -i httpd ngrok http 6901
           sleep 3600

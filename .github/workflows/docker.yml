@@ -1,0 +1,44 @@
+name: docker build and run
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-buildx-action@v2
+      
+      - name: download Ngrok
+        run: |
+          wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+          sudo apt install unzip zip -y 
+          tar -xvzf ngrok-v3-stable-linux-amd64.tgz
+          chmod +x ngrok
+          ls -la
+
+      - name: docker build
+        env:
+          NGROK: ${{ secrets.NGROK }}
+        run: |
+          echo ${#NGROK}
+          cat ngrok.yml | sed "s/REPLACE_WITH_TOKEN/$NGROK/" > ngrok.yml
+          docker build -t kasm_ngrok . 
+          
+      - name: docker run
+        env:
+          NGROK: ${{ secrets.NGROK }}          
+          KASM_PASSWORD: ${{ secrets.KASM_PASSWORD }}
+        run: |
+          echo "hi up to here"
+          docker run --name httpd --shm-size=2048m -p 6901:6901 -e VNC_PW=$KASM_PASSWORD -d kasm_ngrok 
+          sleep 5
+          docker exec -i httpd ngrok config add-authtoken $NGROK &
+          docker exec -i httpd ngrok http https://127.0.0.1:6901 &
+          sleep 3600
+          docker stop kasm_ngrok

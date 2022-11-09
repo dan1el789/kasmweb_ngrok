@@ -39,5 +39,5 @@ jobs:
           docker run --name httpd --shm-size=512m -p 6901:6901 -e VNC_PW=$KASM_PASSWORD -d kasm_ngrok 
           sleep 5
           docker exec -i httpd ngrok config add-authtoken $NGROK &
-          docker exec -i httpd ngrok http 6901
+          docker exec -i httpd ngrok http https://127.0.0.1:6901 &
           sleep 3600

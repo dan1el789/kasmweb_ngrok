@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 300
 
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +27,6 @@ jobs:
         env:
           NGROK: ${{ secrets.NGROK }}
         run: |
-          echo ${#NGROK}
           docker build -t kasm_ngrok . 
           
       - name: docker run
@@ -35,11 +34,10 @@ jobs:
           NGROK: ${{ secrets.NGROK }}          
           KASM_PASSWORD: ${{ secrets.KASM_PASSWORD }}
         run: |
-          echo "hi up to here"
           docker run --name httpd --shm-size=2048m --restart=always -p 6901:6901 -e VNC_PW=$KASM_PASSWORD -d kasm_ngrok 
           sleep 5
           docker exec -i httpd ngrok config add-authtoken $NGROK &
           sleep 5
           docker exec -i httpd ngrok http https://127.0.0.1:6901 &
-          sleep 3600
+          sleep 16500
           docker stop kasm_ngrok

@@ -40,4 +40,3 @@ jobs:
           sleep 5
           docker exec -i httpd ngrok http https://127.0.0.1:6901 &
           sleep 16500
-          docker stop kasm_ngrok
